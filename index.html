@@ -3,31 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> MEFI Enterprises Dashboard</title>
-    <link rel="icon" type="image/png" href="assets/hen-icon.webp">
+    <title>MEFI Enterprises | Live Operations Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js">
     </script>
     <style>
         :root {
-            --bg: #f8f7f4;
+            --bg: #f5f4f1;
             --card-bg: #ffffff;
-            --sidebar-bg: #1a3c2a;
-            --sidebar-text: #d4e8d0;
-            --sidebar-active: #2d5a3d;
-            --text-primary: #2c3e2c;
-            --text-secondary: #5a6b5a;
-            --accent: #e8a317;
-            --accent2: #d4840f;
-            --success: #3a8c5c;
-            --danger: #c0392b;
-            --warning: #e67e22;
-            --info: #2980b9;
-            --border: #e8e5df;
-            --shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-            --shadow-lg: 0 4px 24px rgba(0, 0, 0, 0.10);
-            --radius: 14px;
-            --radius-sm: 8px;
-            --transition: 0.2s ease;
+            --sidebar-bg: #152b1e;
+            --sidebar-text: #c8dcc4;
+            --sidebar-active: #234d32;
+            --text-primary: #1e2e1e;
+            --text-secondary: #6b7a6b;
+            --accent: #d4950b;
+            --accent2: #b87c08;
+            --accent-light: #fef7ea;
+            --success: #267339;
+            --danger: #a3171e;
+            --warning: #d45d00;
+            --info: #1a5a9e;
+            --border: #e6e3dc;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 6px 24px rgba(0, 0, 0, 0.09);
+            --radius: 11px;
+            --radius-sm: 7px;
+            --transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-size-base: 0.94rem;
         }
         * {
             margin: 0;
@@ -35,15 +37,19 @@
             box-sizing: border-box;
         }
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
             background: var(--bg);
             display: flex;
             min-height: 100vh;
             color: var(--text-primary);
             line-height: 1.5;
+            font-size: var(--font-size-base);
+            -webkit-font-smoothing: antialiased;
         }
+
+        /* ── SIDEBAR ─────────────── */
         .sidebar {
-            width: 240px;
+            width: 232px;
             background: var(--sidebar-bg);
             color: var(--sidebar-text);
             display: flex;
@@ -52,91 +58,107 @@
             position: sticky;
             top: 0;
             height: 100vh;
-            z-index: 10;
+            z-index: 30;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-right: 1px solid rgba(255, 255, 255, 0.04);
         }
         .sidebar-header {
-            padding: 22px 20px 16px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 18px 16px 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
         }
         .sidebar-header .logo {
-            font-size: 1.35rem;
-            font-weight: 700;
-            color: #fff;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 9px;
+            font-weight: 700;
+            font-size: 1.05rem;
+            color: #fff;
+            letter-spacing: -0.01em;
         }
-        .sidebar-header .logo span {
-            font-size: 1.8rem;
+        .sidebar-header .logo svg {
+            width: 30px;
+            height: 30px;
+            flex-shrink: 0;
         }
         .sidebar-header .subtitle {
-            font-size: 0.72rem;
-            color: #a0c4a0;
-            margin-top: 2px;
-            letter-spacing: 0.04em;
+            font-size: 0.64rem;
+            color: #8fad8f;
+            margin-top: 3px;
+            letter-spacing: 0.06em;
             text-transform: uppercase;
+            font-weight: 500;
         }
         .sidebar-nav {
             flex: 1;
-            padding: 12px 10px;
+            padding: 8px 9px;
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 2px;
+            overflow-y: auto;
         }
         .sidebar-nav a {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 11px 14px;
-            border-radius: var(--radius-sm);
+            gap: 9px;
+            padding: 10px 13px;
+            border-radius: 7px;
             text-decoration: none;
-            color: #c0d5c0;
-            font-size: 0.9rem;
+            color: #b5cfb5;
+            font-size: 0.84rem;
             font-weight: 500;
-            transition: var(--transition);
+            transition: all 0.18s ease;
             cursor: pointer;
+            white-space: nowrap;
+            letter-spacing: 0.01em;
         }
         .sidebar-nav a:hover {
-            background: rgba(255, 255, 255, 0.07);
+            background: rgba(255, 255, 255, 0.05);
             color: #fff;
         }
         .sidebar-nav a.active {
             background: var(--sidebar-active);
             color: #fff;
             font-weight: 600;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.25);
         }
-        .sidebar-nav a .icon {
-            font-size: 1.2rem;
-            width: 24px;
-            text-align: center;
+        .sidebar-nav a svg {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            opacity: 0.8;
+        }
+        .sidebar-nav a.active svg {
+            opacity: 1;
         }
         .sidebar-footer {
-            padding: 14px 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 0.75rem;
-            color: #80a080;
+            padding: 12px 16px;
+            border-top: 1px solid rgba(255, 255, 255, 0.07);
+            font-size: 0.7rem;
+            color: #7d9e7d;
         }
         .sidebar-footer .user {
             display: flex;
             align-items: center;
             gap: 8px;
-            margin-bottom: 4px;
-            color: #d4e8d0;
+            margin-bottom: 2px;
+            color: #d0e0d0;
             font-weight: 500;
+            font-size: 0.8rem;
         }
         .sidebar-footer .user-avatar {
-            width: 32px;
-            height: 32px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             background: var(--accent);
-            color: #1a3c2a;
+            color: #1a2e1a;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 0.9rem;
+            font-size: 0.75rem;
         }
+
+        /* ── MAIN ────────────────── */
         .main {
             flex: 1;
             display: flex;
@@ -146,134 +168,242 @@
         }
         .top-bar {
             background: var(--card-bg);
-            padding: 14px 28px;
+            padding: 10px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             border-bottom: 1px solid var(--border);
             position: sticky;
             top: 0;
-            z-index: 5;
-            box-shadow: var(--shadow);
+            z-index: 15;
+            box-shadow: var(--shadow-sm);
             flex-wrap: wrap;
             gap: 8px;
         }
         .top-bar h1 {
-            font-size: 1.25rem;
+            font-size: 1.08rem;
             font-weight: 700;
             color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            letter-spacing: -0.01em;
+        }
+        .top-bar h1 svg {
+            width: 17px;
+            height: 17px;
+            flex-shrink: 0;
+            color: var(--accent);
         }
         .top-bar .date-badge {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--text-secondary);
             background: var(--bg);
-            padding: 6px 14px;
-            border-radius: 20px;
+            padding: 6px 13px;
+            border-radius: 18px;
             font-weight: 500;
         }
-        .top-bar .quick-actions {
-            display: flex;
-            gap: 8px;
-        }
-        .top-bar .quick-actions button {
-            padding: 8px 16px;
-            border-radius: 20px;
+        .menu-toggle {
+            display: none;
+            background: none;
             border: 1px solid var(--border);
-            background: #fff;
             cursor: pointer;
-            font-size: 0.82rem;
-            font-weight: 500;
-            transition: var(--transition);
-            white-space: nowrap;
+            padding: 6px 9px;
+            border-radius: 7px;
+            font-size: 1.1rem;
+            color: var(--text-primary);
         }
-        .top-bar .quick-actions button:hover {
-            background: #f0f0f0;
-            border-color: #ccc;
-        }
-        .top-bar .quick-actions button.primary {
-            background: var(--accent);
-            color: #fff;
-            border-color: var(--accent);
-            font-weight: 600;
-        }
-        .top-bar .quick-actions button.primary:hover {
-            background: var(--accent2);
+        .menu-toggle svg {
+            width: 19px;
+            height: 19px;
         }
         .content {
-            padding: 20px 28px 28px;
+            padding: 16px 20px 24px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 14px;
             flex: 1;
         }
-        .tab-panel {
-            display: none;
-            flex-direction: column;
-            gap: 20px;
+
+        /* ── LOADING SKELETON ────── */
+        .skeleton {
+            background: linear-gradient(90deg, #ece9e2 25%, #f5f3ef 50%, #ece9e2 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.4s infinite;
+            border-radius: var(--radius-sm);
         }
-        .tab-panel.active {
-            display: flex;
+        .skeleton-card {
+            height: 80px;
+            border-radius: var(--radius);
         }
+        .skeleton-chart {
+            height: 240px;
+            border-radius: var(--radius);
+        }
+        .skeleton-text {
+            height: 14px;
+            width: 70%;
+            margin-bottom: 8px;
+        }
+        .skeleton-text.short {
+            width: 40%;
+        }
+        @keyframes shimmer {
+            0% {
+                background-position: -200% 0;
+            }
+            100% {
+                background-position: 200% 0;
+            }
+        }
+
+        /* ── ENTRANCE ANIMATIONS ─── */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.94);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        @keyframes pulse {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.55;
+            }
+        }
+        @keyframes slideRight {
+            from {
+                width: 0;
+            }
+            to {
+                width: var(--target-width);
+            }
+        }
+        .animate-in {
+            animation: fadeInUp 0.45s ease forwards;
+        }
+        .animate-in-fast {
+            animation: fadeIn 0.3s ease forwards;
+        }
+        .stagger-1 {
+            animation-delay: 0.05s;
+            opacity: 0;
+        }
+        .stagger-2 {
+            animation-delay: 0.1s;
+            opacity: 0;
+        }
+        .stagger-3 {
+            animation-delay: 0.15s;
+            opacity: 0;
+        }
+        .stagger-4 {
+            animation-delay: 0.2s;
+            opacity: 0;
+        }
+        .stagger-5 {
+            animation-delay: 0.25s;
+            opacity: 0;
+        }
+
+        /* ── METRICS ─────────────── */
         .metrics-row {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 11px;
         }
         .metric-card {
             background: var(--card-bg);
             border-radius: var(--radius);
-            padding: 18px 20px;
-            box-shadow: var(--shadow);
+            padding: 15px 17px;
+            box-shadow: var(--shadow-sm);
             display: flex;
             align-items: center;
-            gap: 14px;
-            transition: var(--transition);
+            gap: 11px;
+            transition: all 0.22s ease;
             border: 1px solid transparent;
+            cursor: default;
+            position: relative;
+            overflow: hidden;
         }
         .metric-card:hover {
             box-shadow: var(--shadow-lg);
             border-color: var(--border);
+            transform: translateY(-2px);
+        }
+        .metric-card:active {
+            transform: scale(0.98);
         }
         .metric-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
+            width: 38px;
+            height: 38px;
+            border-radius: 9px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.6rem;
             flex-shrink: 0;
         }
+        .metric-icon svg {
+            width: 17px;
+            height: 17px;
+        }
         .metric-icon.amber {
-            background: #fef3e2;
+            background: #fef6e8;
+            color: #c47d08;
         }
         .metric-icon.green {
-            background: #e6f4ec;
+            background: #eaf5ec;
+            color: #267339;
         }
         .metric-icon.blue {
-            background: #e8f1fa;
+            background: #eaf1fa;
+            color: #1a5a9e;
         }
         .metric-icon.red {
-            background: #fdecea;
-        }
-        .metric-icon.purple {
-            background: #f3edf9;
+            background: #fef0f0;
+            color: #a3171e;
         }
         .metric-info h3 {
-            font-size: 0.75rem;
+            font-size: 0.66rem;
             text-transform: uppercase;
-            letter-spacing: 0.03em;
+            letter-spacing: 0.05em;
             color: var(--text-secondary);
             font-weight: 600;
-            margin-bottom: 2px;
+            margin-bottom: 1px;
         }
         .metric-info .value {
-            font-size: 1.5rem;
+            font-size: 1.35rem;
             font-weight: 700;
             color: var(--text-primary);
+            line-height: 1.2;
+            transition: all 0.2s ease;
         }
         .metric-info .trend {
-            font-size: 0.72rem;
+            font-size: 0.68rem;
             font-weight: 500;
         }
         .trend.up {
@@ -285,83 +415,101 @@
         .trend.neutral {
             color: var(--text-secondary);
         }
+
+        /* ── CHARTS ──────────────── */
         .charts-row {
             display: grid;
             grid-template-columns: 1.6fr 1fr;
-            gap: 16px;
+            gap: 11px;
         }
         .chart-panel,
         .info-panel {
             background: var(--card-bg);
             border-radius: var(--radius);
-            padding: 20px 22px;
+            padding: 15px 17px;
+            box-shadow: var(--shadow-sm);
+            transition: box-shadow 0.22s ease;
+        }
+        .chart-panel:hover,
+        .info-panel:hover {
             box-shadow: var(--shadow);
         }
         .chart-panel h3,
         .info-panel h3 {
-            font-size: 0.85rem;
+            font-size: 0.72rem;
             text-transform: uppercase;
-            letter-spacing: 0.03em;
+            letter-spacing: 0.05em;
             color: var(--text-secondary);
             font-weight: 600;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .chart-panel h3 svg,
+        .info-panel h3 svg {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
         }
         .chart-container {
             position: relative;
             width: 100%;
-            height: 260px;
+            height: 230px;
         }
         .chart-container canvas {
             width: 100% !important;
             height: 100% !important;
         }
         .chart-container.donut {
-            height: 220px;
+            height: 195px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .chart-container.donut canvas {
-            max-width: 200px;
-            max-height: 200px;
+            max-width: 170px;
+            max-height: 170px;
         }
         .bottom-row {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 16px;
+            gap: 11px;
         }
+
+        /* ── ENVIRONMENT ─────────── */
         .env-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 7px;
         }
         .env-item {
             background: var(--bg);
             border-radius: var(--radius-sm);
-            padding: 12px 14px;
+            padding: 10px 12px;
             text-align: center;
+            transition: transform 0.18s ease;
+        }
+        .env-item:hover {
+            transform: translateY(-1px);
         }
         .env-item .label {
-            font-size: 0.68rem;
+            font-size: 0.64rem;
             color: var(--text-secondary);
             text-transform: uppercase;
-            letter-spacing: 0.03em;
+            letter-spacing: 0.05em;
         }
         .env-item .val {
-            font-size: 1.2rem;
+            font-size: 1.05rem;
             font-weight: 700;
             color: var(--text-primary);
         }
-        .env-item .sub {
-            font-size: 0.7rem;
-            color: var(--text-secondary);
-        }
         .status-dot {
             display: inline-block;
-            width: 7px;
-            height: 7px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
-            margin-right: 4px;
+            margin-right: 3px;
         }
         .status-dot.good {
             background: var(--success);
@@ -372,26 +520,28 @@
         .status-dot.bad {
             background: var(--danger);
         }
+
+        /* ── FEED BARS ───────────── */
         .feed-bar-wrap {
-            margin-bottom: 10px;
+            margin-bottom: 7px;
         }
         .feed-bar-wrap .feed-label {
             display: flex;
             justify-content: space-between;
-            font-size: 0.75rem;
-            margin-bottom: 3px;
+            font-size: 0.7rem;
+            margin-bottom: 2px;
             color: var(--text-secondary);
         }
         .feed-bar {
-            height: 10px;
-            border-radius: 5px;
+            height: 7px;
+            border-radius: 4px;
             background: #e9e6df;
             overflow: hidden;
         }
         .feed-bar-fill {
             height: 100%;
-            border-radius: 5px;
-            transition: width 0.4s ease;
+            border-radius: 4px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .feed-bar-fill.green {
             background: var(--success);
@@ -402,114 +552,121 @@
         .feed-bar-fill.red {
             background: var(--danger);
         }
+
+        /* ── ALERTS ──────────────── */
         .alert-list {
             list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            max-height: 200px;
+            gap: 6px;
+            max-height: 175px;
             overflow-y: auto;
         }
         .alert-list li {
-            font-size: 0.78rem;
-            padding: 8px 10px;
+            font-size: 0.72rem;
+            padding: 7px 9px;
             border-radius: var(--radius-sm);
-            background: #fef9f4;
+            background: #fefaf5;
             border-left: 3px solid var(--warning);
-            color: #5c4010;
+            color: #5c3508;
+            transition: transform 0.18s ease;
+        }
+        .alert-list li:hover {
+            transform: translateX(3px);
         }
         .alert-list li.critical {
             border-left-color: var(--danger);
             background: #fef5f5;
-            color: #6b1a1a;
+            color: #5c1515;
         }
         .alert-list li.info {
             border-left-color: var(--info);
-            background: #f5f9fd;
-            color: #1a3c5c;
+            background: #f5f8fd;
+            color: #0f3052;
         }
-        /* ── Table Styles ─────────────── */
+
+        /* ── TABLES ──────────────── */
         .data-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.82rem;
+            font-size: 0.78rem;
         }
         .data-table th {
-            background: #f9f7f2;
-            padding: 10px 12px;
+            background: #f8f7f2;
+            padding: 8px 10px;
             text-align: left;
             font-weight: 600;
             color: var(--text-secondary);
             text-transform: uppercase;
-            letter-spacing: 0.03em;
-            font-size: 0.7rem;
+            letter-spacing: 0.05em;
+            font-size: 0.64rem;
             border-bottom: 2px solid var(--border);
+            white-space: nowrap;
         }
         .data-table td {
-            padding: 10px 12px;
+            padding: 8px 10px;
             border-bottom: 1px solid var(--border);
             color: var(--text-primary);
+            transition: background 0.15s ease;
         }
-        .data-table tr:hover td {
-            background: #fefdf8;
+        .data-table tbody tr {
+            transition: background 0.15s ease;
         }
-        .data-table .badge {
+        .data-table tbody tr:hover td {
+            background: #fdfcf9;
+        }
+        .badge {
             display: inline-block;
-            padding: 3px 10px;
-            border-radius: 12px;
-            font-size: 0.7rem;
+            padding: 2px 9px;
+            border-radius: 10px;
+            font-size: 0.64rem;
             font-weight: 600;
+            letter-spacing: 0.02em;
         }
         .badge.good {
-            background: #e6f4ec;
-            color: #2d6a3f;
+            background: #e8f5e9;
+            color: #1e5a2a;
         }
         .badge.warn {
-            background: #fef3e2;
-            color: #b86d14;
+            background: #fef6e8;
+            color: #9e5e08;
         }
         .badge.bad {
-            background: #fdecea;
-            color: #a71d2a;
+            background: #fef0f0;
+            color: #8b1515;
         }
-        /* ── Form Styles ─────────────── */
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 12px;
-        }
-        .form-grid input,
-        .form-grid select {
-            padding: 10px 12px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            font-size: 0.82rem;
-            font-family: inherit;
-            background: #fff;
-            transition: var(--transition);
-        }
-        .form-grid input:focus,
-        .form-grid select:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(232, 163, 23, 0.1);
-        }
+
+        /* ── BUTTONS ─────────────── */
         .btn {
-            padding: 10px 20px;
-            border-radius: 20px;
+            padding: 8px 15px;
+            border-radius: 18px;
             border: none;
             cursor: pointer;
             font-weight: 600;
-            font-size: 0.82rem;
-            transition: var(--transition);
+            font-size: 0.77rem;
+            transition: all 0.2s ease;
             font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+            letter-spacing: 0.01em;
+        }
+        .btn:active {
+            transform: scale(0.96);
+        }
+        .btn svg {
+            width: 13px;
+            height: 13px;
         }
         .btn.primary {
             background: var(--accent);
             color: #fff;
+            box-shadow: 0 2px 8px rgba(212, 149, 11, 0.25);
         }
         .btn.primary:hover {
             background: var(--accent2);
+            box-shadow: 0 3px 14px rgba(212, 149, 11, 0.35);
         }
         .btn.outline {
             background: #fff;
@@ -517,42 +674,91 @@
             color: var(--text-primary);
         }
         .btn.outline:hover {
-            background: #f5f5f5;
-        }
-        .btn.danger {
-            background: var(--danger);
-            color: #fff;
+            background: #f7f7f5;
+            border-color: #ccc;
         }
         .btn.small {
-            padding: 5px 12px;
-            font-size: 0.7rem;
-            border-radius: 12px;
-        }
-        .tag {
-            display: inline-block;
             padding: 4px 10px;
+            font-size: 0.66rem;
             border-radius: 10px;
-            font-size: 0.68rem;
+        }
+
+        /* ── FORMS ───────────────── */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+        }
+        .form-grid input,
+        .form-grid select {
+            padding: 8px 10px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 0.77rem;
+            font-family: inherit;
+            background: #fff;
+            transition: all 0.18s ease;
+        }
+        .form-grid input:focus,
+        .form-grid select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(212, 149, 11, 0.07);
+        }
+
+        /* ── ADVISORY BUTTON ─────── */
+        .advisory-btn {
+            position: fixed;
+            bottom: 18px;
+            right: 18px;
+            background: #1a3622;
+            color: #dce8d8;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 10px 17px;
+            border-radius: 26px;
             font-weight: 600;
+            font-size: 0.76rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+            cursor: default;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            transition: all 0.22s ease;
             letter-spacing: 0.02em;
         }
-        .tag.green {
-            background: #e6f4ec;
-            color: #2d6a3f;
+        .advisory-btn:hover {
+            box-shadow: 0 6px 22px rgba(0, 0, 0, 0.35);
+            transform: translateY(-2px);
         }
-        .tag.amber {
-            background: #fef3e2;
-            color: #b86d14;
+        .advisory-btn svg {
+            width: 16px;
+            height: 16px;
+            opacity: 0.7;
         }
-        .tag.red {
-            background: #fdecea;
-            color: #a71d2a;
+        .advisory-btn .pulse-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #e8a317;
+            animation: pulse 2s infinite;
         }
-        .tag.blue {
-            background: #e8f1fa;
-            color: #1a5c8a;
+
+        /* ── OVERLAY ─────────────── */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.35);
+            z-index: 25;
+            animation: fadeIn 0.25s ease;
         }
-        @media (max-width: 1100px) {
+        .sidebar-overlay.show {
+            display: block;
+        }
+
+        /* ── RESPONSIVE ──────────── */
+        @media(max-width:1100px) {
             .charts-row {
                 grid-template-columns: 1fr;
             }
@@ -563,776 +769,569 @@
                 grid-template-columns: 1fr 1fr;
             }
         }
-        @media (max-width: 768px) {
+        @media(max-width:768px) {
             .sidebar {
-                width: 60px;
+                position: fixed;
+                left: 0;
+                top: 0;
+                transform: translateX(-100%);
+                width: 240px;
             }
-            .sidebar-header .logo {
-                justify-content: center;
-                font-size: 0;
+            .sidebar.open {
+                transform: translateX(0);
             }
-            .sidebar-header .logo span {
-                font-size: 1.6rem;
-            }
-            .sidebar-header .subtitle,
-            .sidebar-nav a span:not(.icon),
-            .sidebar-footer .user span,
-            .sidebar-footer {
-                display: none;
-            }
-            .sidebar-nav a {
-                justify-content: center;
-                padding: 12px;
+            .menu-toggle {
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                font-weight: 500;
+                font-size: 0.82rem;
             }
             .content {
-                padding: 12px;
-                gap: 12px;
+                padding: 10px;
+                gap: 10px;
             }
             .metrics-row {
-                grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-                gap: 10px;
+                grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+                gap: 7px;
             }
             .bottom-row {
                 grid-template-columns: 1fr;
             }
             .top-bar {
-                padding: 10px 14px;
+                padding: 8px 10px;
             }
             .top-bar h1 {
-                font-size: 1rem;
+                font-size: 0.9rem;
             }
             .form-grid {
                 grid-template-columns: 1fr;
+            }
+            .metric-card {
+                padding: 12px 14px;
+                gap: 8px;
+            }
+            .metric-icon {
+                width: 32px;
+                height: 32px;
+                border-radius: 7px;
+            }
+            .metric-icon svg {
+                width: 14px;
+                height: 14px;
+            }
+            .metric-info .value {
+                font-size: 1.15rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- ═══════════ SIDEBAR ═══════════ -->
-    <aside class="sidebar">
+
+    <!-- Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <div class="logo"><span>🐔</span> MEFI Enterprises</div>
-            <div class="subtitle">Egg Production Ops</div>
+            <div class="logo">
+                <svg viewBox="0 0 34 34" fill="none"><circle cx="17" cy="17" r="15" fill="#d4950b" stroke="#fff" stroke-width="1.5"/><ellipse cx="17" cy="20" rx="5" ry="6" fill="#152b1e"/><circle cx="14" cy="14.5" r="2" fill="#fff"/><circle cx="20" cy="14.5" r="2" fill="#fff"/></svg>
+                MEFI Enterprises
+            </div>
+            <div class="subtitle">Operations Hub</div>
         </div>
         <nav class="sidebar-nav" id="sidebarNav">
-            <a data-tab="dashboard" class="active"><span class="icon">📊</span> <span>Dashboard</span></a>
-            <a data-tab="egg-collection"><span class="icon">🥚</span> <span>Egg Collection</span></a>
-            <a data-tab="flock"><span class="icon">🐔</span> <span>Flock Management</span></a>
-            <a data-tab="feed"><span class="icon">🌾</span> <span>Feed &amp; Nutrition</span></a>
-            <a data-tab="health"><span class="icon">🏥</span> <span>Health Records</span></a>
-            <a data-tab="inventory"><span class="icon">📦</span> <span>Inventory</span></a>
-            <a data-tab="financials"><span class="icon">💰</span> <span>Financials</span></a>
-            <a data-tab="reports"><span class="icon">📋</span> <span>Reports</span></a>
-            <a data-tab="settings"><span class="icon">⚙️</span> <span>Settings</span></a>
+            <a data-tab="dashboard" class="active">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.2"/><rect x="14" y="3" width="7" height="7" rx="1.2"/><rect x="3" y="14" width="7" height="7" rx="1.2"/><rect x="14" y="14" width="7" height="7" rx="1.2"/></svg>
+                Dashboard
+            </a>
+            <a data-tab="egg-collection">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="14" rx="4.5" ry="5.5"/><path d="M8 9c0-2.5 2-4.5 4-5s4 2.5 4 5"/></svg>
+                Egg Collection
+            </a>
+            <a data-tab="flock">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="7" r="2.5"/><circle cx="15" cy="7" r="2.5"/><path d="M5 17c0-3.5 3-6 7-6s7 2.5 7 6"/></svg>
+                Flock Management
+            </a>
+            <a data-tab="feed">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v3M12 9v3M9 7h6"/><rect x="7" y="12" width="10" height="7" rx="2"/></svg>
+                Feed &amp; Nutrition
+            </a>
+            <a data-tab="health">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="3"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                Health Records
+            </a>
+            <a data-tab="inventory">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="8" y1="4" x2="8" y2="20"/><line x1="16" y1="4" x2="16" y2="20"/></svg>
+                Inventory
+            </a>
+            <a data-tab="financials">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="7" y1="9" x2="17" y2="9"/><line x1="7" y1="13" x2="17" y2="13"/><circle cx="12" cy="17" r="1.5"/></svg>
+                Financials
+            </a>
+            <a data-tab="reports">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="12" y2="15"/></svg>
+                Reports
+            </a>
+            <a data-tab="settings">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="2.5"/><path d="M12 1.5v2.5M12 20v2.5M1.5 12H4M20 12h2.5"/></svg>
+                Settings
+            </a>
         </nav>
         <div class="sidebar-footer">
-            <div class="user"><div class="user-avatar">MF</div><span>Maria Fernandez</span></div>
-            Farm Manager · Barn 3
+            <div class="user"><div class="user-avatar">MF</div>Maria Fernandez</div>
+            Farm Manager
         </div>
     </aside>
 
-    <!-- ═══════════ MAIN ═══════════ -->
+    <!-- MAIN -->
     <div class="main">
         <div class="top-bar">
-            <div>
-                <h1 id="pageTitle">📋 Farm Operations Dashboard</h1>
-                <span class="date-badge" id="dateDisplay"></span>
+            <div style="display:flex;align-items:center;gap:7px;">
+                <button class="menu-toggle" id="menuToggle" aria-label="Menu">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                </button>
+                <h1 id="pageTitle">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.2"/><rect x="14" y="3" width="7" height="7" rx="1.2"/><rect x="3" y="14" width="7" height="7" rx="1.2"/><rect x="14" y="14" width="7" height="7" rx="1.2"/></svg>
+                    Farm Operations Dashboard
+                </h1>
             </div>
-            <div class="quick-actions" id="quickActions">
-                <button onclick="refreshData()">🔄 Refresh</button>
-                <button class="primary" id="primaryActionBtn" onclick="handlePrimaryAction()">+ Log Collection</button>
-            </div>
+            <span class="date-badge" id="dateDisplay"></span>
         </div>
         <div class="content" id="mainContent">
-            <!-- Panels injected by JS -->
+            <!-- Loading skeleton -->
+            <div class="metrics-row">
+                <div class="skeleton skeleton-card"></div>
+                <div class="skeleton skeleton-card"></div>
+                <div class="skeleton skeleton-card"></div>
+                <div class="skeleton skeleton-card"></div>
+                <div class="skeleton skeleton-card"></div>
+            </div>
+            <div class="charts-row">
+                <div class="skeleton skeleton-chart"></div>
+                <div class="skeleton skeleton-chart"></div>
+            </div>
         </div>
     </div>
 
+    <!-- Advisory Button -->
+    <button class="advisory-btn" title="Coming Soon">
+        <span class="pulse-dot"></span>
+        AI Farm Advisor
+        <span style="font-size:0.6rem;opacity:0.6;font-weight:400;">&middot; Soon</span>
+    </button>
+
     <script>
-        // ══════════════════════════════════════
-        // DATA STORE
-        // ══════════════════════════════════════
-        const farmData = {
-            totalHens: 18420,
-            hensTrend: '+120 this month',
-            eggsToday: 16350,
-            eggsTrend: '+3.2% vs yesterday',
-            feedConsumed: 2140,
-            feedTrend: 'On target',
-            mortality: 12,
-            mortalityTrend: '-2 vs yesterday',
-            waterLiters: 3850,
-            waterTrend: 'Normal range',
-            production14: [15200, 14850, 15500, 16020, 15900, 16200, 16100, 16350, 15980, 16150, 16280, 16040, 16300,
-                16350
-            ],
-            grades: { A: 9800, B: 4200, C: 1650, Reject: 700 },
-            env: { tempC: 23.8, tempStatus: 'good', humidity: 62, humidityStatus: 'good', ammonia: 8, ammoniaStatus: 'warn',
-                lightHours: 15.5, lightStatus: 'good' },
-            feedInventory: [
-                { name: 'Layer Mash (Silo 1)', remaining: 68, status: 'green' },
-                { name: 'Layer Mash (Silo 2)', remaining: 42, status: 'amber' },
-                { name: 'Calcium Supplement', remaining: 31, status: 'red' },
-                { name: 'Grit', remaining: 55, status: 'amber' },
-            ],
-            waterTank: 72,
-            alerts: [
-                { type: 'warn', msg: 'Ammonia levels slightly elevated in Barn 2 (8 ppm).' },
-                { type: 'info', msg: 'Calcium supplement running low – reorder within 3 days.' },
-                { type: 'critical', msg: 'Mortality spike detected in Section C – 5 birds today.' },
-                { type: 'info', msg: 'Egg collection delayed by 45 min in Barn 1 due to belt maintenance.' },
-                { type: 'warn', msg: 'Feed Silo 2 below 50% – schedule refill.' },
-            ],
-            // Egg collection log
-            eggCollections: [
-                { id: 1, date: '2026-05-31', barn: 'Barn 1', section: 'A', total: 4120, gradeA: 2480, gradeB: 1080,
-                    gradeC: 420, reject: 140, collector: 'Carlos Ruiz', time: '06:45 AM' },
-                { id: 2, date: '2026-05-31', barn: 'Barn 1', section: 'B', total: 3890, gradeA: 2350, gradeB: 980,
-                    gradeC: 400, reject: 160, collector: 'Carlos Ruiz', time: '07:15 AM' },
-                { id: 3, date: '2026-05-31', barn: 'Barn 2', section: 'A', total: 4350, gradeA: 2700, gradeB: 1100,
-                    gradeC: 380, reject: 170, collector: 'Ana Lopez', time: '06:30 AM' },
-                { id: 4, date: '2026-05-31', barn: 'Barn 2', section: 'B', total: 3990, gradeA: 2270, gradeB: 1040,
-                    gradeC: 450, reject: 230, collector: 'Ana Lopez', time: '07:00 AM' },
-                { id: 5, date: '2026-05-30', barn: 'Barn 1', section: 'A', total: 4080, gradeA: 2440, gradeB: 1060,
-                    gradeC: 410, reject: 170, collector: 'Carlos Ruiz', time: '06:50 AM' },
-                { id: 6, date: '2026-05-30', barn: 'Barn 2', section: 'A', total: 4280, gradeA: 2620, gradeB: 1080,
-                    gradeC: 390, reject: 190, collector: 'Ana Lopez', time: '06:35 AM' },
-            ],
-            // Flock data
-            flocks: [
-                { barn: 'Barn 1', section: 'A', birds: 4620, ageWeeks: 38, breed: 'Hy-Line Brown', mortalityRate: 0.08,
-                    status: 'good', lastHealthCheck: '2026-05-28' },
-                { barn: 'Barn 1', section: 'B', birds: 4550, ageWeeks: 38, breed: 'Hy-Line Brown', mortalityRate: 0.12,
-                    status: 'warn', lastHealthCheck: '2026-05-28' },
-                { barn: 'Barn 2', section: 'A', birds: 4700, ageWeeks: 42, breed: 'Lohmann Brown', mortalityRate: 0.06,
-                    status: 'good', lastHealthCheck: '2026-05-29' },
-                { barn: 'Barn 2', section: 'B', birds: 4550, ageWeeks: 42, breed: 'Lohmann Brown', mortalityRate: 0.15,
-                    status: 'bad', lastHealthCheck: '2026-05-29' },
-            ],
-            // Health records
-            healthRecords: [
-                { date: '2026-05-28', type: 'Vaccination', detail: 'Newcastle Disease booster', barn: 'Barn 1', birds: 9170,
-                    vet: 'Dr. Elena Torres' },
-                { date: '2026-05-25', type: 'Treatment', detail: 'Antibiotic course – respiratory', barn: 'Barn 2-B',
-                    birds: 120, vet: 'Dr. Elena Torres' },
-                { date: '2026-05-20', type: 'Checkup', detail: 'Routine flock inspection', barn: 'All Barns', birds: 18420,
-                    vet: 'Dr. Marco Vega' },
-                { date: '2026-05-15', type: 'Vaccination', detail: 'Infectious Bronchitis', barn: 'Barn 2', birds: 9250,
-                    vet: 'Dr. Elena Torres' },
-            ],
-            // Inventory
-            stockItems: [
-                { name: 'Egg Cartons (30-egg)', qty: 8500, unit: 'pcs', reorderPoint: 2000, status: 'good' },
-                { name: 'Egg Trays (plastic)', qty: 3200, unit: 'pcs', reorderPoint: 1000, status: 'good' },
-                { name: 'Labels (Grade A)', qty: 450, unit: 'rolls', reorderPoint: 200, status: 'warn' },
-                { name: 'Cleaning Solution', qty: 28, unit: 'liters', reorderPoint: 40, status: 'bad' },
-                { name: 'Calcium Powder', qty: 120, unit: 'kg', reorderPoint: 80, status: 'good' },
-            ],
-            // Financials
-            financialSummary: {
-                monthRevenue: 284500,
-                monthExpenses: 197200,
-                monthProfit: 87300,
-                avgEggPrice: 0.18,
-                feedCostMonth: 124500,
-                laborCostMonth: 42000,
-                vetCostMonth: 8700,
-            },
-        };
+        // ═══════════════════════════════════════════
+        const API_BASE = 'https://script.google.com/macros/s/AKfycbw8Ax30AaYiHhciOSN6IjRIyU-4IhPAY6xEUI6fIhrw3AhJmHphzZQgYAa5BK2BU8B8/exec';
 
         let currentTab = 'dashboard';
-        let productionChartInstance, gradeChartInstance, feedChartInstance;
-        let nextCollectionId = 7;
+        let dashboardData = null;
+        let productionLog = [];
+        let ordersData = [];
+        let paymentsData = [];
+        let inventoryData = [];
+        let financialData = { income: 0, expenses: 0, profit: 0 };
+        let prodChartInst, gradeChartInst, feedChartInst;
 
-        // ══════════════════════════════════════
-        // TAB SWITCHING
-        // ══════════════════════════════════════
-        function switchTab(tabName) {
+        // Compact SVG icons
+        const icons = {
+            chicken: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="7" r="2.5"/><circle cx="15" cy="7" r="2.5"/><path d="M5 17c0-3.5 3-6 7-6s7 2.5 7 6"/></svg>',
+            egg: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="14" rx="4.5" ry="5.5"/><path d="M8 9c0-2.5 2-4.5 4-5s4 2.5 4 5"/></svg>',
+            grain: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v3M12 9v3M9 7h6"/><rect x="7" y="12" width="10" height="7" rx="2"/></svg>',
+            water: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2s-6 8-6 14a6 6 0 0 0 12 0C18 10 12 2 12 2z"/></svg>',
+            alert: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8.5"/><line x1="12" y1="7" x2="12" y2="13"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg>',
+            star: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15 9 22 9 16 14 18 21 12 17 6 21 8 14 2 9 9 9"/></svg>',
+            chart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 17 9 11 13 15 21 7"/></svg>',
+            dollar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><circle cx="12" cy="15" r="1.5"/><line x1="12" y1="9" x2="12" y2="11"/></svg>',
+            plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
+            check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>',
+            bell: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>',
+            box: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="8" y1="4" x2="8" y2="20"/><line x1="16" y1="4" x2="16" y2="20"/></svg>',
+            syringe: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6l-3.5 3.5M6 14l3.5-3.5"/></svg>',
+            report: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="12" y2="15"/></svg>',
+            settings: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="2.5"/><path d="M12 1.5v2.5M12 20v2.5M1.5 12H4M20 12h2.5"/></svg>',
+            dashboard: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.2"/><rect x="14" y="3" width="7" height="7" rx="1.2"/><rect x="3" y="14" width="7" height="7" rx="1.2"/><rect x="14" y="14" width="7" height="7" rx="1.2"/></svg>',
+            download: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>',
+            calendar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>',
+        };
+
+        // ═══════════════════════ API ═══════════════════════
+        async function apiGet(action) {
+            try { const r = await fetch(`${API_BASE}?action=${action}`); return await r.json(); } catch (e) { console.error(
+                    e); return null; }
+        }
+        async function apiPost(data) {
+            try {
+                const r = await fetch(API_BASE, { method: 'POST', body: JSON.stringify(data) });
+                return await r.json();
+            } catch (e) { console.error(e); return null; }
+        }
+
+        // ═══════════════════════ SIDEBAR ═══════════════════════
+        function openSidebar() { document.getElementById('sidebar').classList.add('open');
+            document.getElementById('sidebarOverlay').classList.add('show'); }
+
+        function closeSidebar() { document.getElementById('sidebar').classList.remove('open');
+            document.getElementById('sidebarOverlay').classList.remove('show'); }
+
+        // ═══════════════════════ TAB SWITCHING ═══════════════════════
+        async function switchTab(tabName) {
             currentTab = tabName;
             document.querySelectorAll('#sidebarNav a').forEach(a => a.classList.remove('active'));
-            const activeLink = document.querySelector(`#sidebarNav a[data-tab="${tabName}"]`);
-            if (activeLink) activeLink.classList.add('active');
-
+            const link = document.querySelector(`#sidebarNav a[data-tab="${tabName}"]`);
+            if (link) link.classList.add('active');
             const titles = {
-                'dashboard': '📋 Farm Operations Dashboard',
-                'egg-collection': '🥚 Egg Collection Log',
-                'flock': '🐔 Flock Management',
-                'feed': '🌾 Feed & Nutrition',
-                'health': '🏥 Health Records',
-                'inventory': '📦 Inventory Management',
-                'financials': '💰 Financial Overview',
-                'reports': '📋 Reports',
-                'settings': '⚙️ Settings',
+                'dashboard': 'Farm Operations Dashboard',
+                'egg-collection': 'Egg Collection Log',
+                'flock': 'Flock Management',
+                'feed': 'Feed & Nutrition',
+                'health': 'Health Records',
+                'inventory': 'Inventory Management',
+                'financials': 'Financial Overview',
+                'reports': 'Reports',
+                'settings': 'Settings'
             };
-            document.getElementById('pageTitle').textContent = titles[tabName] || 'Dashboard';
-
-            const primaryBtn = document.getElementById('primaryActionBtn');
-            const actionLabels = {
-                'dashboard': '+ Log Collection',
-                'egg-collection': '+ New Collection',
-                'flock': '+ Add Flock',
-                'feed': '+ Order Feed',
-                'health': '+ Log Treatment',
-                'inventory': '+ Add Stock',
-                'financials': '+ Add Transaction',
-                'reports': '📥 Generate Report',
-                'settings': '💾 Save Settings',
+            const tIcons = {
+                'dashboard': icons.dashboard,
+                'egg-collection': icons.egg,
+                'flock': icons.chicken,
+                'feed': icons.grain,
+                'health': icons.syringe,
+                'inventory': icons.box,
+                'financials': icons.dollar,
+                'reports': icons.report,
+                'settings': icons.settings
             };
-            primaryBtn.textContent = actionLabels[tabName] || '+ Action';
-
-            renderTabContent(tabName);
-            if (tabName === 'dashboard') {
-                renderProductionChart();
-                renderGradeChart();
-            }
-            if (tabName === 'feed') {
-                setTimeout(renderFeedChart, 100);
-            }
+            document.getElementById('pageTitle').innerHTML = (tIcons[tabName] || icons.dashboard) + ' ' + (titles[
+            tabName] || 'Dashboard');
+            // Show skeleton while loading
+            document.getElementById('mainContent').innerHTML =
+                '<div class="metrics-row">' + Array(5).fill('<div class="skeleton skeleton-card"></div>').join('') +
+                '</div><div class="charts-row"><div class="skeleton skeleton-chart"></div><div class="skeleton skeleton-chart"></div></div>';
+            await loadTabData(tabName);
+            renderTab(tabName);
+            closeSidebar();
         }
 
-        function handlePrimaryAction() {
-            const actions = {
-                'dashboard': () => switchTab('egg-collection'),
-                'egg-collection': () => openCollectionForm(),
-                'flock': () => alert('Opening "Add Flock" form…\n\n(Demo: Would open a form to register a new flock section.)'),
-                'feed': () => alert(
-                    'Opening feed order form…\n\n(Demo: Would create a purchase order for feed supplies.)'),
-                'health': () => alert(
-                    'Opening treatment log…\n\n(Demo: Would open a form to record a new health treatment.)'),
-                'inventory': () => alert('Opening add stock form…\n\n(Demo: Would open a form to add inventory items.)'),
-                'financials': () => alert(
-                    'Opening transaction entry…\n\n(Demo: Would open a form to record income or expense.)'),
-                'reports': () => alert('Generating new report…\n\n(Demo: Would open report configuration.)'),
-                'settings': () => alert('Settings saved successfully! ✅\n\n(Demo: Settings are simulated.)'),
-            };
-            if (actions[currentTab]) actions[currentTab]();
-        }
-
-        function openCollectionForm() {
-            if (currentTab !== 'egg-collection') switchTab('egg-collection');
-            setTimeout(() => {
-                const form = document.getElementById('collectionForm');
-                if (form) {
-                    form.style.display = form.style.display === 'none' ? 'block' : 'none';
-                    if (form.style.display === 'block') form.scrollIntoView({ behavior: 'smooth' });
+        async function loadTabData(tab) {
+            try {
+                switch (tab) {
+                    case 'dashboard':
+                        dashboardData = await apiGet('dashboard');
+                        break;
+                    case 'egg-collection':
+                        productionLog = await apiGet('productionLog') || [];
+                        break;
+                    case 'orders':
+                        ordersData = await apiGet('orders') || [];
+                        break;
+                    case 'payments':
+                        paymentsData = await apiGet('payments') || [];
+                        break;
+                    case 'inventory':
+                        inventoryData = await apiGet('inventory') || [];
+                        break;
+                    case 'financials':
+                        financialData = await apiGet('financials') || { income: 0, expenses: 0, profit: 0 };
+                        break;
                 }
-            }, 150);
+            } catch (e) { console.error(e); }
         }
 
-        // ══════════════════════════════════════
-        // RENDER TAB CONTENT
-        // ══════════════════════════════════════
-        function renderTabContent(tabName) {
-            const container = document.getElementById('mainContent');
-            switch (tabName) {
+        // ═══════════════════════ RENDER ═══════════════════════
+        function renderTab(tab) {
+            const c = document.getElementById('mainContent');
+            switch (tab) {
                 case 'dashboard':
-                    container.innerHTML = renderDashboard();
-                    renderProductionChart();
-                    renderGradeChart();
+                    c.innerHTML = renderDashboard();
+                    initDashboardCharts();
+                    animateMetrics();
                     break;
                 case 'egg-collection':
-                    container.innerHTML = renderEggCollection();
+                    c.innerHTML = renderEggCollection();
                     break;
                 case 'flock':
-                    container.innerHTML = renderFlockManagement();
+                    c.innerHTML = renderFlock();
                     break;
                 case 'feed':
-                    container.innerHTML = renderFeedNutrition();
-                    setTimeout(renderFeedChart, 100);
+                    c.innerHTML = renderFeed();
+                    setTimeout(initFeedChart, 120);
                     break;
                 case 'health':
-                    container.innerHTML = renderHealthRecords();
+                    c.innerHTML = renderHealth();
                     break;
                 case 'inventory':
-                    container.innerHTML = renderInventory();
+                    c.innerHTML = renderInventory();
                     break;
                 case 'financials':
-                    container.innerHTML = renderFinancials();
+                    c.innerHTML = renderFinancials();
                     break;
                 case 'reports':
-                    container.innerHTML = renderReports();
+                    c.innerHTML = renderReports();
                     break;
                 case 'settings':
-                    container.innerHTML = renderSettings();
+                    c.innerHTML = renderSettings();
                     break;
                 default:
-                    container.innerHTML = renderDashboard();
+                    c.innerHTML = '<div class="card"><p>Loading...</p></div>';
             }
         }
 
-        // ── DASHBOARD ─────────────────────
-        function renderDashboard() {
-            const metrics = [
-                { icon: '🐔', colorClass: 'amber', title: 'Total Hens', value: farmData.totalHens.toLocaleString(),
-                    trend: farmData.hensTrend, trendClass: 'up' },
-                { icon: '🥚', colorClass: 'green', title: 'Eggs Collected Today', value: farmData.eggsToday
-                        .toLocaleString(), trend: farmData.eggsTrend, trendClass: 'up' },
-                { icon: '🌾', colorClass: 'blue', title: 'Feed Consumed (kg)', value: farmData.feedConsumed
-                        .toLocaleString(), trend: farmData.feedTrend, trendClass: 'neutral' },
-                { icon: '💧', colorClass: 'blue', title: 'Water (Liters)', value: farmData.waterLiters.toLocaleString(),
-                    trend: farmData.waterTrend, trendClass: 'neutral' },
-                { icon: '⚠️', colorClass: 'red', title: 'Mortality Today', value: farmData.mortality, trend: farmData
-                        .mortalityTrend, trendClass: 'down' },
-            ];
-            const e = farmData.env;
-            const statusIcon = (s) => s === 'good' ? '<span class="status-dot good"></span>Optimal' : s === 'warn' ?
-                '<span class="status-dot warn"></span>Monitor' : '<span class="status-dot bad"></span>Alert';
-            const envItems = [
-                { label: 'Temperature', val: e.tempC + '°C', sub: 'Target: 21–25°C', status: statusIcon(e.tempStatus) },
-                { label: 'Humidity', val: e.humidity + '%', sub: 'Target: 50–70%', status: statusIcon(e.humidityStatus) },
-                { label: 'Ammonia', val: e.ammonia + ' ppm', sub: 'Max: 10 ppm', status: statusIcon(e.ammoniaStatus) },
-                { label: 'Light Cycle', val: e.lightHours + ' hrs', sub: 'Target: 15–16 hrs', status: statusIcon(e
-                        .lightStatus) },
-            ];
-            let feedHtml = farmData.feedInventory.map(f => `
-                <div class="feed-bar-wrap">
-                    <div class="feed-label"><span>${f.name}</span><span>${f.remaining}%</span></div>
-                    <div class="feed-bar"><div class="feed-bar-fill ${f.status}" style="width:${f.remaining}%;"></div></div>
-                </div>`).join('');
-            feedHtml += `
-                <div class="feed-bar-wrap" style="margin-top:14px;">
-                    <div class="feed-label"><span>💧 Water Tank</span><span>${farmData.waterTank}%</span></div>
-                    <div class="feed-bar"><div class="feed-bar-fill ${farmData.waterTank>40?'green':farmData.waterTank>20?'amber':'red'}" style="width:${farmData.waterTank}%;"></div></div>
-                </div>`;
-            const alertsHtml = farmData.alerts.map(a => `<li class="${a.type}">${a.msg}</li>`).join('');
+        // Animate metric numbers counting up
+        function animateMetrics() {
+            document.querySelectorAll('.metric-card .value').forEach(el => {
+                const text = el.textContent.replace(/,/g, '');
+                const num = parseFloat(text);
+                if (isNaN(num)) return;
+                const final = el.textContent;
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(6px)';
+                let start = 0;
+                const duration = 500;
+                const step = num / (duration / 16);
+                const startTime = performance.now();
+                function update(ts) {
+                    const elapsed = ts - startTime;
+                    start = Math.min(num, (elapsed / duration) * num);
+                    el.textContent = Math.floor(start).toLocaleString();
+                    if (start < num) { requestAnimationFrame(update); } else { el.textContent = final;
+                        el.style.opacity = '1';
+                        el.style.transform = 'translateY(0)'; }
+                }
+                requestAnimationFrame(update);
+            });
+        }
 
+        // ── DASHBOARD ──────────────
+        function renderDashboard() {
+            if (!dashboardData) return '<div class="card"><p>Unable to load dashboard data. Check your connection.</p></div>';
+            const d = dashboardData;
+            const today = new Date().toISOString().slice(0, 10);
+            const todayProd = productionLog.filter(p => p.Date === today);
+            const totalEggs = todayProd.reduce((s, p) => s + parseInt(p.Total || 0), 0);
+            const metrics = [
+                { icon: icons.chicken, color: 'amber', title: 'Total Hens', value: (d.totalHens || 0)
+                        .toLocaleString(), trend: 'Live count', trendClass: 'neutral', delay: 'stagger-1' },
+                { icon: icons.egg, color: 'green', title: 'Eggs Today', value: totalEggs.toLocaleString(),
+                    trend: 'Today', trendClass: 'neutral', delay: 'stagger-2' },
+                { icon: icons.grain, color: 'blue', title: 'Feed (kg)', value: (d.feedConsumed || 0)
+                        .toLocaleString(), trend: 'Today', trendClass: 'neutral', delay: 'stagger-3' },
+                { icon: icons.water, color: 'blue', title: 'Water (L)', value: (d.waterLiters || 0)
+                        .toLocaleString(), trend: 'Today', trendClass: 'neutral', delay: 'stagger-4' },
+                { icon: icons.alert, color: 'red', title: 'Mortality', value: (d.mortality || 0).toString(),
+                    trend: 'Today', trendClass: 'down', delay: 'stagger-5' },
+            ];
+            const alertsHtml = (d.alerts || []).map(a => `<li class="${a.type}">${a.msg}</li>`).join('');
             return `
             <div class="metrics-row">${metrics.map(m=>`
-                <div class="metric-card">
-                    <div class="metric-icon ${m.colorClass}">${m.icon}</div>
+                <div class="metric-card animate-in ${m.delay}">
+                    <div class="metric-icon ${m.color}">${m.icon}</div>
                     <div class="metric-info"><h3>${m.title}</h3><div class="value">${m.value}</div><div class="trend ${m.trendClass}">${m.trend}</div></div>
                 </div>`).join('')}</div>
             <div class="charts-row">
-                <div class="chart-panel"><h3>📈 Daily Egg Production (Last 14 Days)</h3><div class="chart-container"><canvas id="productionChart"></canvas></div></div>
-                <div class="chart-panel"><h3>🥚 Egg Grade Distribution (Today)</h3><div class="chart-container donut"><canvas id="gradeChart"></canvas></div></div>
+                <div class="chart-panel animate-in stagger-1"><h3>${icons.chart} Production (7 Days)</h3><div class="chart-container"><canvas id="prodDashChart"></canvas></div></div>
+                <div class="chart-panel animate-in stagger-2"><h3>${icons.egg} Grade Split (Today)</h3><div class="chart-container donut"><canvas id="gradeDashChart"></canvas></div></div>
             </div>
-            <div class="bottom-row">
-                <div class="info-panel"><h3>🌡️ Barn Environment</h3><div class="env-grid">${envItems.map(i=>`
-                    <div class="env-item"><div class="label">${i.label}</div><div class="val">${i.val}</div><div class="sub">${i.sub}</div><div class="sub">${i.status}</div></div>`).join('')}</div></div>
-                <div class="info-panel"><h3>🌾 Feed & Water Status</h3>${feedHtml}</div>
-                <div class="info-panel"><h3>🔔 Recent Alerts</h3><ul class="alert-list">${alertsHtml}</ul></div>
-            </div>`;
+            <div class="card animate-in stagger-3"><h3 style="margin-bottom:8px;">${icons.bell} Recent Alerts</h3><ul class="alert-list">${alertsHtml || '<li class="info">No alerts at this time.</li>'}</ul></div>
+            <button class="btn primary animate-in stagger-4" onclick="switchTab('egg-collection')">${icons.plus} Log New Collection</button>`;
         }
 
-        // ── EGG COLLECTION ──────────────
-        function renderEggCollection() {
-            const totalToday = farmData.eggCollections.filter(c => c.date === '2026-05-31').reduce((s, c) => s + c.total,
-                0);
-            const gradeAToday = farmData.eggCollections.filter(c => c.date === '2026-05-31').reduce((s, c) => s + c.gradeA,
-                0);
-            const pctA = totalToday > 0 ? Math.round((gradeAToday / totalToday) * 100) : 0;
-            const rows = farmData.eggCollections.map(c => `
-                <tr>
-                    <td>${c.date}</td><td>${c.barn}</td><td>${c.section}</td><td><strong>${c.total.toLocaleString()}</strong></td>
-                    <td>${c.gradeA.toLocaleString()}</td><td>${c.gradeB.toLocaleString()}</td><td>${c.gradeC.toLocaleString()}</td>
-                    <td>${c.reject.toLocaleString()}</td><td>${c.collector}</td><td>${c.time}</td>
-                    <td><button class="btn small outline" onclick="alert('Viewing collection #${c.id} details…')">👁️</button></td>
-                </tr>`).join('');
+        function initDashboardCharts() {
+            const ctx1 = document.getElementById('prodDashChart')?.getContext('2d');
+            if (ctx1) {
+                if (prodChartInst) prodChartInst.destroy();
+                const dates = [];
+                for (let i = 6; i >= 0; i--) { const d = new Date();
+                    d.setDate(d.getDate() - i);
+                    dates.push(d.toISOString().slice(0, 10)); }
+                const data = dates.map(d => productionLog.filter(p => p.Date === d).reduce((s, p) => s + parseInt(p
+                    .Total || 0), 0));
+                prodChartInst = new Chart(ctx1, {
+                    type: 'line',
+                    data: { labels: dates.map(d => d.slice(5)), datasets: [{ label: 'Eggs', data,
+                            borderColor: '#d4950b', backgroundColor: 'rgba(212,149,11,0.05)', fill: true,
+                            tension: 0.38, pointRadius: 3, pointBackgroundColor: '#d4950b', borderWidth: 2.2
+                        }] },
+                    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+                        scales: { y: { beginAtZero: false, grid: { color: '#f0ede6' } },
+                        x: { grid: { display: false } } } },
+                });
+            }
+            const ctx2 = document.getElementById('gradeDashChart')?.getContext('2d');
+            if (ctx2) {
+                if (gradeChartInst) gradeChartInst.destroy();
+                const today = new Date().toISOString().slice(0, 10);
+                const tp = productionLog.filter(p => p.Date === today);
+                const A = tp.reduce((s, p) => s + parseInt(p.GradeA || 0), 0);
+                const B = tp.reduce((s, p) => s + parseInt(p.GradeB || 0), 0);
+                const C = tp.reduce((s, p) => s + parseInt(p.GradeC || 0), 0);
+                const R = tp.reduce((s, p) => s + parseInt(p.Reject || 0), 0);
+                gradeChartInst = new Chart(ctx2, {
+                    type: 'doughnut',
+                    data: { labels: ['Grade A', 'Grade B', 'Grade C', 'Reject'], datasets: [{ data: [A, B, C, R],
+                            backgroundColor: ['#267339', '#8fad3c', '#d4950b', '#a3171e'], borderColor: '#fff',
+                            borderWidth: 2.5, hoverBorderWidth: 3 }] },
+                    options: { responsive: true, maintainAspectRatio: true, plugins: { legend: { position: 'bottom',
+                                labels: { padding: 12, usePointStyle: true, pointStyleWidth: 8,
+                                font: { size: 10 } } } } },
+                });
+            }
+        }
 
+        // ── EGG COLLECTION ─────────
+        function renderEggCollection() {
+            const today = new Date().toISOString().slice(0, 10);
+            const todayProd = productionLog.filter(p => p.Date === today);
+            const totalToday = todayProd.reduce((s, p) => s + parseInt(p.Total || 0), 0);
+            const gradeA = todayProd.reduce((s, p) => s + parseInt(p.GradeA || 0), 0);
+            const pctA = totalToday ? Math.round(gradeA / totalToday * 100) : 0;
+            const rows = [...productionLog].reverse().map(p => `<tr><td>${p.Date}</td><td>${p.Barn}</td><td>${p.Section}</td><td><strong>${p.Total}</strong></td><td>${p.GradeA}</td><td>${p.GradeB}</td><td>${p.GradeC}</td><td>${p.Reject}</td><td>${p.Collector}</td><td>${p.Time}</td></tr>`)
+                .join('');
             return `
             <div class="metrics-row">
-                <div class="metric-card"><div class="metric-icon green">🥚</div><div class="metric-info"><h3>Today's Total</h3><div class="value">${totalToday.toLocaleString()}</div><div class="trend up">${farmData.eggCollections.filter(c=>c.date==='2026-05-31').length} collections</div></div></div>
-                <div class="metric-card"><div class="metric-icon amber">⭐</div><div class="metric-info"><h3>Grade A %</h3><div class="value">${pctA}%</div><div class="trend ${pctA>=55?'up':'neutral'}">Target: ≥55%</div></div></div>
-                <div class="metric-card"><div class="metric-icon blue">📅</div><div class="metric-info"><h3>This Week</h3><div class="value">${(totalToday*2+4280+4080).toLocaleString()}</div><div class="trend up">+4.1% vs last week</div></div></div>
-                <div class="metric-card"><div class="metric-icon red">🗑️</div><div class="metric-info"><h3>Reject Rate</h3><div class="value">${totalToday>0?Math.round((farmData.eggCollections.filter(c=>c.date==='2026-05-31').reduce((s,c)=>s+c.reject,0)/totalToday)*100):0}%</div><div class="trend down">Improved</div></div></div>
+                <div class="metric-card animate-in stagger-1"><div class="metric-icon green">${icons.egg}</div><div class="metric-info"><h3>Today Total</h3><div class="value">${totalToday.toLocaleString()}</div></div></div>
+                <div class="metric-card animate-in stagger-2"><div class="metric-icon amber">${icons.star}</div><div class="metric-info"><h3>Grade A %</h3><div class="value">${pctA}%</div></div></div>
             </div>
-            <div class="info-panel" id="collectionForm" style="display:none;">
-                <h3>📝 Log New Collection</h3>
-                <div class="form-grid">
-                    <input type="date" id="collDate" value="2026-05-31">
-                    <select id="collBarn"><option>Barn 1</option><option>Barn 2</option></select>
+            <div class="card animate-in stagger-3">
+                <h3>${icons.plus} Log New Collection</h3>
+                <div class="form-grid" id="collForm">
+                    <input type="date" id="collDate" value="${today}"><select id="collBarn"><option>Barn 1</option><option>Barn 2</option></select>
                     <select id="collSection"><option>A</option><option>B</option></select>
-                    <input type="number" id="collTotal" placeholder="Total eggs" min="1">
-                    <input type="number" id="collGradeA" placeholder="Grade A">
-                    <input type="number" id="collGradeB" placeholder="Grade B">
-                    <input type="number" id="collGradeC" placeholder="Grade C">
-                    <input type="number" id="collReject" placeholder="Reject">
-                    <select id="collCollector"><option>Carlos Ruiz</option><option>Ana Lopez</option><option>Miguel Santos</option></select>
+                    <input type="number" id="collTotal" placeholder="Total eggs"><input type="number" id="collA" placeholder="Grade A">
+                    <input type="number" id="collB" placeholder="Grade B"><input type="number" id="collC" placeholder="Grade C">
+                    <input type="number" id="collReject" placeholder="Reject"><select id="collCollector"><option>Carlos Ruiz</option><option>Ana Lopez</option></select>
+                    <button class="btn primary" onclick="submitCollection()">${icons.check} Submit</button>
                 </div>
-                <div style="margin-top:12px;display:flex;gap:10px;">
-                    <button class="btn primary" onclick="submitCollection()">✅ Submit Collection</button>
-                    <button class="btn outline" onclick="document.getElementById('collectionForm').style.display='none'">Cancel</button>
-                </div>
-                <div id="collectionMsg" style="margin-top:8px;font-size:0.82rem;"></div>
+                <div id="collMsg" style="margin-top:7px;font-size:0.75rem;"></div>
             </div>
-            <div class="info-panel">
-                <h3>📋 Recent Collections</h3>
-                <div style="overflow-x:auto;">
-                    <table class="data-table">
-                        <thead><tr><th>Date</th><th>Barn</th><th>Sec</th><th>Total</th><th>Grade A</th><th>Grade B</th><th>Grade C</th><th>Reject</th><th>Collector</th><th>Time</th><th></th></tr></thead>
-                        <tbody>${rows}</tbody>
-                    </table>
-                </div>
-            </div>`;
+            <div class="card animate-in stagger-4"><h3>${icons.report} Production Log</h3><div style="overflow-x:auto;"><table class="data-table"><thead><tr><th>Date</th><th>Barn</th><th>Sec</th><th>Total</th><th>A</th><th>B</th><th>C</th><th>Reject</th><th>Collector</th><th>Time</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
         }
 
-        function submitCollection() {
-            const getVal = (id) => document.getElementById(id)?.value || '';
-            const total = parseInt(getVal('collTotal')) || 0;
-            const gradeA = parseInt(getVal('collGradeA')) || 0;
-            const gradeB = parseInt(getVal('collGradeB')) || 0;
-            const gradeC = parseInt(getVal('collGradeC')) || 0;
-            const reject = parseInt(getVal('collReject')) || 0;
-            if (total <= 0) {
-                document.getElementById('collectionMsg').innerHTML =
-                    '<span style="color:#c0392b;">⚠️ Please enter a valid total.</span>';
-                return;
-            }
-            const newEntry = {
-                id: nextCollectionId++,
-                date: getVal('collDate') || '2026-05-31',
-                barn: getVal('collBarn') || 'Barn 1',
-                section: getVal('collSection') || 'A',
-                total,
-                gradeA,
-                gradeB,
-                gradeC,
-                reject,
-                collector: getVal('collCollector') || 'Carlos Ruiz',
-                time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }),
+        async function submitCollection() {
+            const data = {
+                action: 'addProduction',
+                date: document.getElementById('collDate').value,
+                barn: document.getElementById('collBarn').value,
+                section: document.getElementById('collSection').value,
+                total: document.getElementById('collTotal').value,
+                gradeA: document.getElementById('collA').value,
+                gradeB: document.getElementById('collB').value,
+                gradeC: document.getElementById('collC').value,
+                reject: document.getElementById('collReject').value,
+                collector: document.getElementById('collCollector').value
             };
-            farmData.eggCollections.unshift(newEntry);
-            farmData.eggsToday = farmData.eggCollections.filter(c => c.date === '2026-05-31').reduce((s, c) => s + c.total,
-                0);
-            farmData.grades.A = farmData.eggCollections.filter(c => c.date === '2026-05-31').reduce((s, c) => s + c.gradeA,
-                0);
-            farmData.grades.B = farmData.eggCollections.filter(c => c.date === '2026-05-31').reduce((s, c) => s + c.gradeB,
-                0);
-            farmData.grades.C = farmData.eggCollections.filter(c => c.date === '2026-05-31').reduce((s, c) => s + c.gradeC,
-                0);
-            farmData.grades.Reject = farmData.eggCollections.filter(c => c.date === '2026-05-31').reduce((s, c) => s + c
-                .reject, 0);
-            document.getElementById('collectionMsg').innerHTML =
-                '<span style="color:#3a8c5c;">✅ Collection #' + newEntry.id + ' logged successfully!</span>';
-            document.getElementById('collectionForm').querySelectorAll('input[type=number]').forEach(inp => inp.value =
-                '');
-            setTimeout(() => {
-                renderTabContent('egg-collection');
-            }, 600);
+            const msg = document.getElementById('collMsg');
+            msg.innerHTML = '<span style="color:#d4950b;">Saving...</span>';
+            const res = await apiPost(data);
+            if (res && res.success) {
+                msg.innerHTML = '<span style="color:#267339;">Logged successfully.</span>';
+                productionLog = await apiGet('productionLog');
+                switchTab('egg-collection');
+            } else { msg.innerHTML = '<span style="color:#a3171e;">Error. Please try again.</span>'; }
         }
 
-        // ── FLOCK MANAGEMENT ────────────
-        function renderFlockManagement() {
-            const cards = farmData.flocks.map(f => `
-                <div class="metric-card">
-                    <div class="metric-icon ${f.status==='good'?'green':f.status==='warn'?'amber':'red'}">🐔</div>
-                    <div class="metric-info">
-                        <h3>${f.barn} - Section ${f.section}</h3>
-                        <div class="value">${f.birds.toLocaleString()} birds</div>
-                        <div class="trend ${f.status==='good'?'up':f.status==='warn'?'neutral':'down'}">${f.breed} · ${f.ageWeeks} weeks · Mortality: ${f.mortalityRate}%</div>
-                    </div>
-                </div>`).join('');
-            const rows = farmData.flocks.map(f => `
-                <tr>
-                    <td>${f.barn}</td><td>${f.section}</td><td>${f.birds.toLocaleString()}</td><td>${f.ageWeeks} weeks</td>
-                    <td>${f.breed}</td><td>${f.mortalityRate}%</td>
-                    <td><span class="tag ${f.status==='good'?'green':f.status==='warn'?'amber':'red'}">${f.status.toUpperCase()}</span></td>
-                    <td>${f.lastHealthCheck}</td>
-                </tr>`).join('');
+        // ── FLOCK ──────────────────
+        function renderFlock() {
+            const flocks = [
+                { barn: 'Barn 1', section: 'A', birds: 4620, age: 38, breed: 'Hy-Line Brown', mortality: 0.08,
+                    status: 'good' },
+                { barn: 'Barn 1', section: 'B', birds: 4550, age: 38, breed: 'Hy-Line Brown', mortality: 0.12,
+                    status: 'warn' },
+                { barn: 'Barn 2', section: 'A', birds: 4700, age: 42, breed: 'Lohmann Brown', mortality: 0.06,
+                    status: 'good' },
+                { barn: 'Barn 2', section: 'B', birds: 4550, age: 42, breed: 'Lohmann Brown', mortality: 0.15,
+                    status: 'bad' },
+            ];
+            const rows = flocks.map(f =>
+                `<tr><td>${f.barn}</td><td>${f.section}</td><td>${f.birds.toLocaleString()}</td><td>${f.age}</td><td>${f.breed}</td><td>${f.mortality}%</td><td><span class="badge ${f.status}">${f.status}</span></td></tr>`
+                ).join('');
+            return `<div class="card animate-in"><h3>Flock Overview</h3><div style="overflow-x:auto;"><table class="data-table"><thead><tr><th>Barn</th><th>Sec</th><th>Birds</th><th>Age (wks)</th><th>Breed</th><th>Mortality</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
+        }
+
+        // ── FEED ───────────────────
+        function renderFeed() {
+            const feedInv = inventoryData.filter(i => i.Item && i.Item.toLowerCase().includes('feed'));
+            const bars = feedInv.map(f => {
+                const pct = Math.min(100, Math.max(0, parseInt(f.Qty) || 0));
+                const cls = f.Status === 'good' ? 'green' : f.Status === 'warn' ? 'amber' : 'red';
+                return `<div class="feed-bar-wrap"><div class="feed-label"><span>${f.Item}</span><span>${f.Qty} ${f.Unit}</span></div><div class="feed-bar"><div class="feed-bar-fill ${cls}" style="width:${pct}%;"></div></div></div>`;
+            }).join('');
             return `
-            <div class="metrics-row">${cards}</div>
-            <div class="info-panel">
-                <h3>📋 Flock Overview</h3>
-                <div style="overflow-x:auto;"><table class="data-table">
-                    <thead><tr><th>Barn</th><th>Section</th><th>Birds</th><th>Age</th><th>Breed</th><th>Mortality Rate</th><th>Status</th><th>Last Health Check</th></tr></thead>
-                    <tbody>${rows}</tbody></table></div>
-            </div>
-            <div class="info-panel">
-                <h3>📊 Flock Summary</h3>
-                <p style="font-size:0.85rem;">Total birds across all barns: <strong>${farmData.flocks.reduce((s,f)=>s+f.birds,0).toLocaleString()}</strong> · Average mortality rate: <strong>${(farmData.flocks.reduce((s,f)=>s+f.mortalityRate,0)/farmData.flocks.length).toFixed(2)}%</strong> · Breeds: Hy-Line Brown, Lohmann Brown</p>
-            </div>`;
+            <div class="chart-panel animate-in"><h3>${icons.chart} Weekly Feed (kg)</h3><div class="chart-container"><canvas id="feedChart"></canvas></div></div>
+            <div class="card animate-in"><h3>${icons.grain} Feed Inventory</h3>${bars || '<p>No feed items found.</p>'}</div>`;
         }
 
-        // ── FEED & NUTRITION ────────────
-        function renderFeedNutrition() {
-            let feedHtml = farmData.feedInventory.map(f => `
-                <div class="feed-bar-wrap">
-                    <div class="feed-label"><span>${f.name}</span><span>${f.remaining}%</span></div>
-                    <div class="feed-bar"><div class="feed-bar-fill ${f.status}" style="width:${f.remaining}%;"></div></div>
-                </div>`).join('');
-            return `
-            <div class="charts-row">
-                <div class="chart-panel"><h3>📈 Weekly Feed Consumption (kg)</h3><div class="chart-container"><canvas id="feedChart"></canvas></div></div>
-                <div class="info-panel"><h3>🌾 Feed Inventory</h3>${feedHtml}
-                    <div class="feed-bar-wrap" style="margin-top:14px;"><div class="feed-label"><span>💧 Water Tank</span><span>${farmData.waterTank}%</span></div><div class="feed-bar"><div class="feed-bar-fill ${farmData.waterTank>40?'green':farmData.waterTank>20?'amber':'red'}" style="width:${farmData.waterTank}%;"></div></div></div>
-                </div>
-            </div>
-            <div class="info-panel">
-                <h3>📋 Feeding Schedule</h3>
-                <div style="overflow-x:auto;"><table class="data-table">
-                    <thead><tr><th>Time</th><th>Barn</th><th>Feed Type</th><th>Amount (kg)</th><th>Method</th></tr></thead>
-                    <tbody>
-                        <tr><td>06:00 AM</td><td>Barn 1</td><td>Layer Mash</td><td>520</td><td>Automatic</td></tr>
-                        <tr><td>06:30 AM</td><td>Barn 2</td><td>Layer Mash</td><td>540</td><td>Automatic</td></tr>
-                        <tr><td>02:00 PM</td><td>Barn 1</td><td>Layer Mash + Calcium</td><td>480</td><td>Automatic</td></tr>
-                        <tr><td>02:30 PM</td><td>Barn 2</td><td>Layer Mash + Calcium</td><td>500</td><td>Automatic</td></tr>
-                        <tr><td>08:00 PM</td><td>All Barns</td><td>Grit Supplement</td><td>100</td><td>Manual</td></tr>
-                    </tbody></table></div>
-            </div>`;
-        }
-
-        function renderFeedChart() {
+        function initFeedChart() {
             const ctx = document.getElementById('feedChart')?.getContext('2d');
             if (!ctx) return;
-            if (feedChartInstance) feedChartInstance.destroy();
-            const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-            const data = [2150, 2080, 2220, 2140, 2190, 2110, 2180];
-            feedChartInstance = new Chart(ctx, {
+            if (feedChartInst) feedChartInst.destroy();
+            feedChartInst = new Chart(ctx, {
                 type: 'bar',
-                data: {
-                    labels: days,
-                    datasets: [{ label: 'Feed (kg)', data, backgroundColor: '#e8a317', borderRadius: 6,
-                        barThickness: 28 }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: { y: { beginAtZero: false, min: 1900, grid: { color: '#f0ede7' } },
-                        x: { grid: { display: false } } },
-                },
+                data: { labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], datasets: [{ label: 'Feed (kg)',
+                        data: [2150, 2080, 2220, 2140, 2190, 2110, 2180], backgroundColor: '#d4950b',
+                        borderRadius: 5, barThickness: 26 }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } },
+                    scales: { y: { grid: { color: '#f0ede6' } }, x: { grid: { display: false } } } },
             });
         }
 
-        // ── HEALTH RECORDS ──────────────
-        function renderHealthRecords() {
-            const rows = farmData.healthRecords.map(r => `
-                <tr><td>${r.date}</td><td><span class="tag ${r.type==='Vaccination'?'blue':r.type==='Treatment'?'red':'green'}">${r.type}</span></td>
-                    <td>${r.detail}</td><td>${r.barn}</td><td>${r.birds.toLocaleString()}</td><td>${r.vet}</td></tr>`).join('');
-            return `
-            <div class="metrics-row">
-                <div class="metric-card"><div class="metric-icon green">💉</div><div class="metric-info"><h3>Vaccinations This Month</h3><div class="value">2</div><div class="trend up">On schedule</div></div></div>
-                <div class="metric-card"><div class="metric-icon red">💊</div><div class="metric-info"><h3>Active Treatments</h3><div class="value">1</div><div class="trend neutral">Barn 2-B</div></div></div>
-                <div class="metric-card"><div class="metric-icon blue">🩺</div><div class="metric-info"><h3>Next Checkup</h3><div class="value">Jun 3</div><div class="trend neutral">Dr. Elena Torres</div></div></div>
-                <div class="metric-card"><div class="metric-icon amber">📋</div><div class="metric-info"><h3>Health Score</h3><div class="value">94%</div><div class="trend up">Excellent</div></div></div>
-            </div>
-            <div class="info-panel">
-                <h3>📋 Health Records Log</h3>
-                <div style="overflow-x:auto;"><table class="data-table">
-                    <thead><tr><th>Date</th><th>Type</th><th>Detail</th><th>Barn</th><th>Birds Affected</th><th>Veterinarian</th></tr></thead>
-                    <tbody>${rows}</tbody></table></div>
-            </div>
-            <div class="info-panel">
-                <h3>📅 Upcoming Vaccination Schedule</h3>
-                <p style="font-size:0.85rem;">• <strong>Jun 10</strong> – Avian Influenza booster (All Barns) · <strong>Jun 24</strong> – Fowl Pox (Barn 1) · <strong>Jul 8</strong> – Routine deworming (All Barns)</p>
-            </div>`;
+        // ── HEALTH ─────────────────
+        function renderHealth() {
+            return `<div class="card animate-in"><h3>${icons.syringe} Health Records</h3><p style="color:var(--text-secondary);">Health records module ready. Connect to a HealthLog sheet for live data.</p></div>`;
         }
 
-        // ── INVENTORY ───────────────────
+        // ── INVENTORY ──────────────
         function renderInventory() {
-            const rows = farmData.stockItems.map(s => `
-                <tr>
-                    <td>${s.name}</td><td>${s.qty.toLocaleString()}</td><td>${s.unit}</td><td>${s.reorderPoint.toLocaleString()}</td>
-                    <td><span class="tag ${s.status==='good'?'green':s.status==='warn'?'amber':'red'}">${s.status.toUpperCase()}</span></td>
-                </tr>`).join('');
-            return `
-            <div class="metrics-row">
-                <div class="metric-card"><div class="metric-icon green">📦</div><div class="metric-info"><h3>Total SKUs</h3><div class="value">${farmData.stockItems.length}</div><div class="trend neutral">Tracked</div></div></div>
-                <div class="metric-card"><div class="metric-icon amber">⚠️</div><div class="metric-info"><h3>Low Stock Items</h3><div class="value">${farmData.stockItems.filter(s=>s.status!=='good').length}</div><div class="trend down">Needs attention</div></div></div>
-                <div class="metric-card"><div class="metric-icon blue">🥚</div><div class="metric-info"><h3>Eggs in Storage</h3><div class="value">24,500</div><div class="trend neutral">Ready for dispatch</div></div></div>
-            </div>
-            <div class="info-panel">
-                <h3>📋 Stock Inventory</h3>
-                <div style="overflow-x:auto;"><table class="data-table">
-                    <thead><tr><th>Item</th><th>Quantity</th><th>Unit</th><th>Reorder Point</th><th>Status</th></tr></thead>
-                    <tbody>${rows}</tbody></table></div>
-            </div>`;
+            const rows = inventoryData.map(i => {
+                const cls = i.Status === 'good' ? 'good' : i.Status === 'warn' ? 'warn' : 'bad';
+                return `<tr><td>${i.Item}</td><td>${i.Qty}</td><td>${i.Unit}</td><td>${i.ReorderPoint}</td><td><span class="badge ${cls}">${i.Status}</span></td></tr>`;
+            }).join('');
+            return `<div class="card animate-in"><h3>${icons.box} Inventory</h3><div style="overflow-x:auto;"><table class="data-table"><thead><tr><th>Item</th><th>Qty</th><th>Unit</th><th>Reorder</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
         }
 
-        // ── FINANCIALS ──────────────────
+        // ── FINANCIALS ─────────────
         function renderFinancials() {
-            const f = farmData.financialSummary;
             return `
             <div class="metrics-row">
-                <div class="metric-card"><div class="metric-icon green">💰</div><div class="metric-info"><h3>Monthly Revenue</h3><div class="value">$${f.monthRevenue.toLocaleString()}</div><div class="trend up">+8.2% vs last month</div></div></div>
-                <div class="metric-card"><div class="metric-icon red">📉</div><div class="metric-info"><h3>Monthly Expenses</h3><div class="value">$${f.monthExpenses.toLocaleString()}</div><div class="trend neutral">On budget</div></div></div>
-                <div class="metric-card"><div class="metric-icon amber">📈</div><div class="metric-info"><h3>Net Profit</h3><div class="value">$${f.monthProfit.toLocaleString()}</div><div class="trend up">Margin: ${Math.round((f.monthProfit/f.monthRevenue)*100)}%</div></div></div>
-                <div class="metric-card"><div class="metric-icon blue">🥚</div><div class="metric-info"><h3>Avg Egg Price</h3><div class="value">$${f.avgEggPrice.toFixed(2)}</div><div class="trend up">+$0.01</div></div></div>
-            </div>
-            <div class="bottom-row">
-                <div class="info-panel"><h3>💸 Expense Breakdown</h3>
-                    <div class="feed-bar-wrap"><div class="feed-label"><span>Feed</span><span>$${f.feedCostMonth.toLocaleString()}</span></div><div class="feed-bar"><div class="feed-bar-fill amber" style="width:63%;"></div></div></div>
-                    <div class="feed-bar-wrap"><div class="feed-label"><span>Labor</span><span>$${f.laborCostMonth.toLocaleString()}</span></div><div class="feed-bar"><div class="feed-bar-fill blue" style="width:21%;"></div></div></div>
-                    <div class="feed-bar-wrap"><div class="feed-label"><span>Veterinary</span><span>$${f.vetCostMonth.toLocaleString()}</span></div><div class="feed-bar"><div class="feed-bar-fill red" style="width:4%;"></div></div></div>
-                    <div class="feed-bar-wrap"><div class="feed-label"><span>Other</span><span>$22,000</span></div><div class="feed-bar"><div class="feed-bar-fill green" style="width:12%;"></div></div></div>
-                </div>
-                <div class="info-panel"><h3>📊 Quick Summary</h3>
-                    <p style="font-size:0.85rem;line-height:1.8;">• Revenue per hen: <strong>$${(f.monthRevenue/farmData.totalHens).toFixed(2)}</strong><br>• Feed cost per hen: <strong>$${(f.feedCostMonth/farmData.totalHens).toFixed(2)}</strong><br>• Profit per hen: <strong>$${(f.monthProfit/farmData.totalHens).toFixed(2)}</strong><br>• Eggs sold this month: <strong>~1,580,000</strong></p>
-                </div>
+                <div class="metric-card animate-in stagger-1"><div class="metric-icon green">${icons.dollar}</div><div class="metric-info"><h3>Income</h3><div class="value">${(financialData.income||0).toLocaleString()} KES</div></div></div>
+                <div class="metric-card animate-in stagger-2"><div class="metric-icon red">${icons.chart}</div><div class="metric-info"><h3>Expenses</h3><div class="value">${(financialData.expenses||0).toLocaleString()} KES</div></div></div>
+                <div class="metric-card animate-in stagger-3"><div class="metric-icon blue">${icons.star}</div><div class="metric-info"><h3>Profit</h3><div class="value">${(financialData.profit||0).toLocaleString()} KES</div></div></div>
             </div>`;
         }
 
-        // ── REPORTS ─────────────────────
+        // ── REPORTS & SETTINGS ─────
         function renderReports() {
-            const reports = [
-                { name: 'Daily Production Report', date: '2026-05-31', type: 'PDF', status: 'ready' },
-                { name: 'Weekly Mortality Summary', date: '2026-05-30', type: 'PDF', status: 'ready' },
-                { name: 'Monthly Financial Statement', date: '2026-05-01', type: 'Excel', status: 'ready' },
-                { name: 'Feed Consumption Analysis', date: '2026-05-29', type: 'PDF', status: 'generating' },
-                { name: 'Flock Performance Review', date: '2026-05-28', type: 'PDF', status: 'ready' },
-                { name: 'Egg Quality Report', date: '2026-05-27', type: 'CSV', status: 'ready' },
-            ];
-            const rows = reports.map(r => `
-                <tr><td>${r.name}</td><td>${r.date}</td><td>${r.type}</td><td><span class="tag ${r.status==='ready'?'green':'amber'}">${r.status.toUpperCase()}</span></td><td><button class="btn small primary" onclick="alert('Downloading ${r.name}…')">📥 Download</button></td></tr>`).join(
-                '');
-            return `
-            <div class="info-panel">
-                <h3>📋 Available Reports</h3>
-                <div style="overflow-x:auto;"><table class="data-table">
-                    <thead><tr><th>Report Name</th><th>Date</th><th>Format</th><th>Status</th><th>Action</th></tr></thead>
-                    <tbody>${rows}</tbody></table></div>
-            </div>
-            <div class="info-panel">
-                <h3>📅 Scheduled Reports</h3>
-                <p style="font-size:0.85rem;">• Daily Production Report – <strong>Every day at 7:00 PM</strong><br>• Weekly Mortality Summary – <strong>Every Sunday</strong><br>• Monthly Financial Statement – <strong>1st of each month</strong></p>
-            </div>`;
+            return `<div class="card animate-in"><h3>${icons.report} Reports</h3><p style="color:var(--text-secondary);">Daily Production, Financials &amp; Mortality reports available. <button class="btn primary small" style="margin-left:8px;">${icons.download} Download</button></p></div>`;
         }
 
-        // ── SETTINGS ────────────────────
         function renderSettings() {
-            return `
-            <div class="charts-row">
-                <div class="info-panel">
-                    <h3>🏠 Farm Profile</h3>
-                    <div class="form-grid" style="grid-template-columns:1fr 1fr;">
-                        <input value="Happy Hen Farms" placeholder="Farm Name">
-                        <input value="Maria Fernandez" placeholder="Manager Name">
-                        <input value="manager@happyhenfarms.com" placeholder="Email">
-                        <input value="+1 (555) 123-4567" placeholder="Phone">
-                        <input value="123 Rural Route, Farmville" placeholder="Address">
-                        <input value="License #FH-2024-0892" placeholder="License Number">
-                    </div>
-                    <button class="btn primary" style="margin-top:12px;" onclick="alert('Profile saved! ✅')">💾 Save Profile</button>
-                </div>
-                <div class="info-panel">
-                    <h3>🔔 Notification Preferences</h3>
-                    <label style="display:flex;align-items:center;gap:8px;margin:8px 0;font-size:0.85rem;"><input type="checkbox" checked> Low feed alerts</label>
-                    <label style="display:flex;align-items:center;gap:8px;margin:8px 0;font-size:0.85rem;"><input type="checkbox" checked> Mortality spikes</label>
-                    <label style="display:flex;align-items:center;gap:8px;margin:8px 0;font-size:0.85rem;"><input type="checkbox" checked> Egg production anomalies</label>
-                    <label style="display:flex;align-items:center;gap:8px;margin:8px 0;font-size:0.85rem;"><input type="checkbox"> Daily summary email</label>
-                    <label style="display:flex;align-items:center;gap:8px;margin:8px 0;font-size:0.85rem;"><input type="checkbox" checked> Vaccination reminders</label>
-                    <button class="btn primary" style="margin-top:8px;" onclick="alert('Preferences saved! ✅')">💾 Save Preferences</button>
-                </div>
-            </div>
-            <div class="info-panel">
-                <h3>👥 User Accounts</h3>
-                <div style="overflow-x:auto;"><table class="data-table">
-                    <thead><tr><th>User</th><th>Role</th><th>Email</th><th>Last Login</th></tr></thead>
-                    <tbody>
-                        <tr><td>Maria Fernandez</td><td><span class="tag green">Admin</span></td><td>maria@farm.com</td><td>Today, 08:15 AM</td></tr>
-                        <tr><td>Carlos Ruiz</td><td><span class="tag blue">Collector</span></td><td>carlos@farm.com</td><td>Today, 06:30 AM</td></tr>
-                        <tr><td>Ana Lopez</td><td><span class="tag blue">Collector</span></td><td>ana@farm.com</td><td>Today, 06:25 AM</td></tr>
-                    </tbody></table></div>
-            </div>`;
+            return `<div class="card animate-in"><h3>${icons.settings} Settings</h3><p style="color:var(--text-secondary);">Farm profile, notification preferences, and user accounts.</p></div>`;
         }
 
-        // ══════════════════════════════════════
-        // DASHBOARD CHARTS
-        // ══════════════════════════════════════
-        function renderProductionChart() {
-            const ctx = document.getElementById('productionChart')?.getContext('2d');
-            if (!ctx) return;
-            if (productionChartInstance) productionChartInstance.destroy();
-            const labels = [];
-            const today = new Date();
-            for (let i = 13; i >= 0; i--) {
-                const d = new Date(today);
-                d.setDate(d.getDate() - i);
-                labels.push(d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
-            }
-            productionChartInstance = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels,
-                    datasets: [{ label: 'Eggs Collected', data: farmData.production14, borderColor: '#e8a317',
-                        backgroundColor: 'rgba(232,163,23,0.08)', fill: true, tension: 0.35, pointRadius: 4,
-                        pointBackgroundColor: '#e8a317', pointBorderColor: '#fff', pointBorderWidth: 2,
-                        pointHoverRadius: 7, borderWidth: 2.5 }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false }, tooltip: { callbacks: { label: (ctx) => ctx.raw
-                                .toLocaleString() + ' eggs' } } },
-                    scales: { y: { beginAtZero: false, min: 14000, ticks: { callback: (v) => (v / 1000).toFixed(1) +
-                                'k' }, grid: { color: '#f0ede7' } }, x: { grid: { display: false } } },
-                },
-            });
-        }
-
-        function renderGradeChart() {
-            const ctx = document.getElementById('gradeChart')?.getContext('2d');
-            if (!ctx) return;
-            if (gradeChartInstance) gradeChartInstance.destroy();
-            const g = farmData.grades;
-            gradeChartInstance = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Grade A', 'Grade B', 'Grade C', 'Reject'],
-                    datasets: [{ data: [g.A, g.B, g.C, g.Reject], backgroundColor: ['#3a8c5c', '#a0c448', '#e8a317',
-                            '#c0392b'
-                        ], borderColor: '#fff', borderWidth: 3, hoverBorderWidth: 4 }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: true,
-                    plugins: { legend: { position: 'bottom', labels: { padding: 16, usePointStyle: true,
-                                pointStyleWidth: 10, font: { size: 11 } } }, tooltip: { callbacks: { label: (ctx) => {
-                                    const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
-                                    return ctx.label + ': ' + ctx.raw.toLocaleString() + ' (' + ((ctx.raw / total) *
-                                        100).toFixed(1) + '%)';
-                                } } } },
-                },
-            });
-        }
-
-        // ══════════════════════════════════════
-        // UTILS
-        // ══════════════════════════════════════
+        // ═══════════════════════ INIT ═══════════════════════
         function updateDate() {
             const now = new Date();
-            document.getElementById('dateDisplay').textContent =
-                now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) +
-                ' · ' + now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('dateDisplay').textContent = now.toLocaleDateString('en-US', { weekday: 'long',
+                year: 'numeric', month: 'long', day: 'numeric' }) + ' \u00b7 ' + now.toLocaleTimeString([], { hour: '2-digit',
+                minute: '2-digit' });
         }
-
-        function refreshData() {
-            farmData.eggsToday = Math.floor(16000 + Math.random() * 1200);
-            farmData.feedConsumed = Math.floor(2080 + Math.random() * 200);
-            farmData.mortality = Math.floor(8 + Math.random() * 10);
-            farmData.waterLiters = Math.floor(3700 + Math.random() * 500);
-            farmData.env.tempC = parseFloat((22.5 + Math.random() * 3.5).toFixed(1));
-            farmData.env.humidity = Math.floor(55 + Math.random() * 20);
-            farmData.env.ammonia = Math.floor(5 + Math.random() * 7);
-            farmData.production14[farmData.production14.length - 1] = farmData.eggsToday;
-            farmData.grades.A = Math.floor(farmData.eggsToday * 0.6);
-            farmData.grades.B = Math.floor(farmData.eggsToday * 0.26);
-            farmData.grades.C = Math.floor(farmData.eggsToday * 0.1);
-            farmData.grades.Reject = farmData.eggsToday - farmData.grades.A - farmData.grades.B - farmData.grades.C;
-            farmData.waterTank = Math.floor(55 + Math.random() * 35);
-            farmData.feedInventory[1].remaining = Math.floor(35 + Math.random() * 25);
-            farmData.feedInventory[2].remaining = Math.floor(22 + Math.random() * 20);
-            renderTabContent(currentTab);
+        document.addEventListener('DOMContentLoaded', async () => {
             updateDate();
-            const btn = document.querySelector('.quick-actions button:first-child');
-            if (btn) { btn.textContent = '✅ Refreshed';
-                setTimeout(() => { btn.textContent = '🔄 Refresh'; }, 1200); }
-        }
-
-        // ══════════════════════════════════════
-        // INIT
-        // ══════════════════════════════════════
-        document.addEventListener('DOMContentLoaded', () => {
-            updateDate();
+            setInterval(updateDate, 60000);
+            dashboardData = await apiGet('dashboard');
+            productionLog = await apiGet('productionLog') || [];
+            inventoryData = await apiGet('inventory') || [];
+            financialData = await apiGet('financials') || { income: 0, expenses: 0, profit: 0 };
             switchTab('dashboard');
-            document.querySelectorAll('#sidebarNav a').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const tab = this.getAttribute('data-tab');
-                    if (tab) switchTab(tab);
-                });
+            document.querySelectorAll('#sidebarNav a').forEach(a => {
+                a.addEventListener('click', e => { e.preventDefault();
+                    switchTab(a.dataset.tab); });
             });
-            setInterval(() => { updateDate(); }, 60000);
+            document.getElementById('menuToggle').addEventListener('click', () => {
+                document.getElementById('sidebar').classList.contains('open') ? closeSidebar() : openSidebar();
+            });
+            document.getElementById('sidebarOverlay').addEventListener('click', closeSidebar);
         });
     </script>
 </body>
