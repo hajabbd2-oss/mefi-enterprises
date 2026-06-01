@@ -487,6 +487,17 @@ tbody tr:hover td { background: #f8fafc; }
 #setup-screen.show { display: flex; }
 
 /* ═══ RESPONSIVE ═══ */
+
+/* ── Large screens: sidebar always visible ── */
+@media (min-width: 769px) {
+  .sidebar { transform: translateX(0) !important; }
+  .sidebar.hidden-mobile { transform: translateX(0) !important; }
+  .sidebar-close { display: none !important; }
+  .sidebar-overlay { display: none !important; }
+  .menu-btn { display: none !important; }
+  .main { margin-left: var(--sidebar-w) !important; }
+}
+
 @media (max-width: 1024px) {
   .charts-grid-2 { grid-template-columns: 1fr; }
   .charts-grid-3 { grid-template-columns: 1fr 1fr; }
@@ -1245,7 +1256,7 @@ window.GAS_URL = 'YOUR_GAS_WEB_APP_URL_HERE';
 <script>
 'use strict';
 
-window.GAS_URL = 'https://script.google.com/macros/s/AKfycbxmXIrYr_dOsWPxCUY18Y07j6D_iHt-tPIHJpI7Oh1eTRyBCCPUDmblEZWm5LSFA30u/exec';
+window.GAS_URL = 'https://script.google.com/macros/s/AKfycbwlKxaOKpw3b7Ino3-wOhu0P9P5npAG-40e7Cq7_SJkccAaq--gniZKwuXns2K4JyGI/exec';
 
 // ═══ CONFIG & STATE ═══
 var S = {
@@ -1540,8 +1551,10 @@ function openSidebar() {
   document.getElementById('sidebar-close-btn').style.display = 'flex';
 }
 function closeSidebar() {
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('sidebar-overlay').classList.remove('show');
+  if (window.innerWidth <= 768) {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebar-overlay').classList.remove('show');
+  }
 }
 
 // ═══ DASHBOARD ═══
